@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Student Portal | Secure Enrollment</title>    <link rel="icon" type="png" href="favicon.png">    <style>        :root {            --bg-deep: #050b1a;            --card-bg: #0d1b35;            --accent-blue: #3b82f6;            --text-main: #e6f1ff;            --text-dim: #8892b0;            --error: #ff4d4d;            --success: #10b981;            --warning: #f59e0b;        }
+        * { box-sizing: border-box; }
+        body {            background-color: var(--bg-deep);            color: var(--text-main);            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;            margin: 0;            padding: 40px 10px;            display: flex;            justify-content: center;        }
+        .portal-wrapper {            width: 100%;            max-width: 850px;            animation: fadeIn 0.8s ease-out;        }
+        @keyframes fadeIn {            from { opacity: 0; transform: translateY(15px); }            to { opacity: 1; transform: translateY(0); }        }
+        header {            text-align: center;            margin-bottom: 40px;        }
+        header h1 {            font-size: 2.2rem;            letter-spacing: 2px;            text-transform: uppercase;            margin: 0;            color: white;        }
+        .section-card {            background: var(--card-bg);            border: 1px solid rgba(255, 255, 255, 0.05);            border-radius: 12px;            padding: 35px;            margin-bottom: 25px;            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);            transition: 0.3s;        }
+        .section-card:hover {            border-color: var(--accent-blue);            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.1);        }
+        h2 {            font-size: 1rem;            color: var(--accent-blue);            text-transform: uppercase;            letter-spacing: 3px;            margin-top: 0;            margin-bottom: 25px;            display: flex;            align-items: center;        }
+        h2::after {            content: "";            flex-grow: 1;            height: 1px;            background: rgba(255, 255, 255, 0.1);            margin-left: 15px;        }
+        .grid {            display: grid;            grid-template-columns: 1fr 1fr;            gap: 20px;        }
+        .form-group {            margin-bottom: 18px;            position: relative;        }
+        label {            display: block;            font-size: 0.75rem;            font-weight: 700;            margin-bottom: 8px;            color: var(--text-dim);            text-transform: uppercase;        }
+        input, select, textarea {            width: 100%;            background: var(--bg-deep);            border: 1.5px solid rgba(255, 255, 255, 0.1);            border-radius: 6px;            padding: 12px 15px;            color: white;            font-size: 0.95rem;            transition: 0.3s;        }
+        input:focus, select:focus, textarea:focus {            outline: none;            border-color: var(--accent-blue);            background: #0a1529;        }
+        /* Password Strength */        .strength-container {            margin-top: 8px;        }        .strength-meter {            height: 4px;            background: #1a2a47;            border-radius: 2px;            overflow: hidden;        }        .strength-bar {            height: 100%;            width: 0%;            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);        }        .strength-label {            font-size: 0.7rem;            margin-top: 4px;            font-weight: bold;        }
+        /* OTP Input Styling */        .otp-group {            display: flex;            gap: 12px;            justify-content: center;            margin: 20px 0;        }        .otp-box {            width: 50px;            height: 55px;            text-align: center;            font-size: 1.4rem;            font-weight: bold;        }
+        /* Quiz Styling */        .quiz-container {            background: rgba(0, 0, 0, 0.2);            padding: 15px;            border-radius: 8px;        }        .option {            display: flex;            align-items: center;            padding: 10px;            cursor: pointer;            border-radius: 4px;            margin: 5px 0;            transition: 0.2s;        }        .option:hover { background: rgba(59, 130, 246, 0.1); }        .option input { width: auto; margin-right: 12px; }
+        .err-msg {            color: var(--error);            font-size: 0.75rem;            margin-top: 5px;            display: none;            animation: shake 0.4s ease;        }
+        @keyframes shake {            0%, 100% { transform: translateX(0); }            25% { transform: translateX(-5px); }            75% { transform: translateX(5px); }        }
+        button.submit-btn {            background: var(--accent-blue);            color: white;            border: none;            padding: 20px;            width: 100%;            border-radius: 8px;            font-size: 1.1rem;            font-weight: bold;            text-transform: uppercase;            letter-spacing: 2px;            cursor: pointer;            transition: 0.3s;            margin-top: 10px;        }
+        button.submit-btn:hover {            transform: translateY(-3px);            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);            filter: brightness(1.1);        }
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+    </style></head><body>
+<div class="portal-wrapper">    <header>        <h1>Student Portal</h1>        <p style="color: var(--text-dim);">Global Academic Registration System</p>    </header>
+    <form id="portalForm">        <!-- SECTION 1: Personal Records -->        <div class="section-card">            <h2>01 Personal Details</h2>            <div class="grid">                <div class="form-group">                    <label>Full Name</label>                    <input type="text" id="fname" placeholder="Enter legal name" required>                </div>                <div class="form-group">                    <label>Age</label>                    <input type="number" id="age" min="16" max="100">                </div>                <div class="form-group">                    <label>Date of Birth</label>                    <input type="date" id="dob" required>                </div>                <div class="form-group">                    <label>Contact Number</label>                    <input type="tel" placeholder="+1 000 000 0000">                </div>                <div class="form-group">                    <label>Father's Name</label>                    <input type="text" id="father">                </div>                <div class="form-group">                    <label>Mother's Name</label>                    <input type="text" id="mother">                </div>            </div>        </div>
+        <!-- SECTION 2: Academic Background -->        <div class="section-card">            <h2>02 Academic Profile</h2>            <div class="form-group">                <label>University / School Name</label>                <input type="text" placeholder="Institution Name">            </div>            <div class="grid">                <div class="form-group">                    <label>Selected Course</label>                    <select id="course">                        <option value="">Choose your major</option>                        <option>B.S. Computer Science</option>                        <option>B.A. Literature</option>                        <option>B.E. Mechanical Eng.</option>                        <option>M.B.A. Finance</option>                    </select>                </div>                <div class="form-group">                    <label>Cumulative GPA</label>                    <input type="number" id="cgpa" step="0.01" placeholder="0.00">                    <div id="cgpaErr" class="err-msg">CGPA must be between 0 and 10.</div>                </div>            </div>        </div>
+         <!-- SECTION 3: Credentials -->        <div class="section-card">            <h2>03 Security Access</h2>            <div class="grid">                <div class="form-group">                    <label>University Email</label>                    <input type="email" id="email" placeholder="student@nexus.edu" required>                    <div id="emailErr" class="err-msg">Invalid format (e.g. user@domain.com)</div>                </div>                <div class="form-group">                    <label>Enrollment ID</label>                    <input type="text" id="enroll" placeholder="8-Digit Alpha-numeric" maxlength="8" required>                    <div id="enrollErr" class="err-msg">Must be exactly 8 characters.</div>                </div>            </div>
+            <div class="grid">                <div class="form-group">                    <label>Create Password</label>                    <input type="password" id="pass1" placeholder="••••••••" required>                    <div class="strength-container">                        <div class="strength-meter"><div id="strengthBar" class="strength-bar"></div></div>                        <div id="strengthText" class="strength-label">Strength: Too Short</div>                    </div>                </div>                <div class="form-group">                    <label>Confirm Password</label>                    <input type="password" id="pass2" placeholder="••••••••" required>                    <div id="matchErr" class="err-msg">Passwords do not match.</div>                </div>            </div>        </div>
+        <!-- SECTION 4: Quiz & Security -->        <div class="section-card">            <h2>04 Verification & Quiz</h2>            <div class="quiz-container">                <p style="font-size: 0.9rem; margin-top: 0;"><strong>Quick Quiz:</strong> Which data structure uses LIFO (Last-In-First-Out)?</p>                <label class="option"><input type="radio" name="quiz" value="a"> Queue</label>                <label class="option"><input type="radio" name="quiz" value="b"> Stack</label>                <label class="option"><input type="radio" name="quiz" value="c"> Array</label>            </div>                                    <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 20px; text-align: center;">ENTER 4-DIGIT SECURITY OTP</p>            <div class="otp-group">                <input type="text" class="otp-box" maxlength="1">                <input type="text" class="otp-box" maxlength="1">                <input type="text" class="otp-box" maxlength="1">                <input type="text" class="otp-box" maxlength="1">            </div>        </div>
+        <!-- SECTION 5: Recovery Security -->        <div class="section-card">            <h2>05 Recovery Security (KBA)</h2>            <p style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 15px;">                This question will be used to recover your account if you forget your password.            </p>                <div class="form-group">                <label>Security Question</label>                <select id="securityQuestion" required>                    <option value="">-- Select a Question --</option>                    <option value="pet">What was the name of your first pet?</option>                    <option value="city">In what city were you born?</option>                    <option value="car">What was the make of your first car?</option>                    <option value="teacher">What was your favorite teacher's name?</option>                </select>            </div>
+            <div class="form-group">                <label>Your Answer</label>                <input type="text" id="securityAnswer" placeholder="Answer is case-sensitive" required>                <div id="kbaErr" class="err-msg">Answer must be at least 3 characters long.</div>            </div>        </div>
+        <!-- SECTION 6: Comments -->        <div class="section-card">            <h2>06 Additional Remarks</h2>            <div class="form-group">                <label>Notes to Administrator</label>                <textarea rows="4" placeholder="Any specific requirements or background info..."></textarea>            </div>        </div>
+        <button type="submit" class="submit-btn" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Join Us</button>    </form>
+<div id="dashboard" style="display: none;">    <div class="section-card" style="background: linear-gradient(135deg, #0d1b35 0%, #162a4d 100%); border-bottom: 3px solid var(--accent-blue);">        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">            <div style="display: flex; align-items: center; gap: 25px;">                <div style="position: relative;">                    <div id="pfp-container" style="width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--accent-blue); overflow: hidden; background: #050b1a; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s;">                        <span id="dash-initials" style="font-size: 2.5rem; font-weight: 800; color: white; letter-spacing: -2px;">JD</span>                        <img id="pfp-preview" style="display:none; width:100%; height:100%; object-fit:cover;">                    </div>                    <label for="pfp-input" style="position: absolute; bottom: 0; right: 0; background: var(--accent-blue); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid var(--card-bg); font-size: 1rem;">                        📷                    </label>                    <input type="file" id="pfp-input" accept="image/*" style="display: none;">                </div>                                <div>                    <h1 id="dash-name" style="font-size: 1.8rem; margin: 0; color: #ffffff; font-family: 'Segoe UI Semibold', sans-serif;">Full Name</h1>                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">                        <span style="background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase;">Verified Student</span>                        <span id="dash-email" style="color: var(--text-dim); font-size: 0.9rem;">student@nexus.edu</span>                    </div>                </div>            </div>                        <div style="text-align: right;">                <div style="color: var(--text-dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Academic ID</div>                <div id="dash-enroll" style="font-size: 1.5rem; font-weight: 200; color: white;">#--------</div>            </div>        </div>    </div>
+    <div class="grid">        <div class="section-card" style="background: white; color: #050b1a;">            <h2 style="color: #0d1b35; border-color: rgba(0,0,0,0.1);">Overview</h2>            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">                <div style="padding: 15px; background: #f8fafc; border-radius: 8px; border-left: 4px solid var(--accent-blue);">                    <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: bold;">Course Major</div>                    <div id="dash-course" style="font-size: 1rem; font-weight: 600; margin-top: 5px;">Not Selected</div>                </div>                <div style="padding: 15px; background: #f8fafc; border-radius: 8px; border-left: 4px solid var(--success);">                    <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: bold;">Current GPA</div>                    <div id="dash-cgpa" style="font-size: 1.4rem; font-weight: 800; color: #059669; margin-top: 5px;">0.00</div>                </div>            </div>        </div>
+        <div class="section-card" style="background: rgba(255,255,255,0.03); backdrop-filter: blur(10px);">            <h2>Verification Matrix</h2>            <div style="font-size: 0.85rem; line-height: 1.8;">                <div style="display: flex; justify-content: space-between;">                    <span style="color: var(--text-dim);">D.O.B:</span>                    <span id="dash-dob" style="color: white; font-weight: bold;">-- / -- / --</span>                </div>                <div style="display: flex; justify-content: space-between; margin-top: 10px;">                    <span style="color: var(--text-dim);">Account Status:</span>                    <span style="color: var(--success); font-weight: bold;">● Active / Encrypted</span>                </div>                <div style="display: flex; justify-content: space-between; margin-top: 10px;">                    <span style="color: var(--text-dim);">Network Latency:</span>                    <span style="color: var(--accent-blue);">14ms (Optimal)</span>                </div>            </div>        </div>    </div>
+    <div style="display: flex; gap: 15px;">        <button onclick="window.print()" class="submit-btn" style="flex: 1; background: #ffffff; color: #050b1a;">Download PDF ID</button>        <button onclick="window.location.reload()" class="submit-btn" style="flex: 1; background: transparent; border: 1.5px solid rgba(255,255,255,0.2); color: white;">Logout</button>    </div></div>
+</div>
+
+<script>
+    const form = document.getElementById('portalForm');
+    const dashboard = document.getElementById('dashboard');
+    const pass1 = document.getElementById('pass1');
+    const pass2 = document.getElementById('pass2');
+    const bar = document.getElementById('strengthBar');
+    const text = document.getElementById('strengthText');
+    const pfpInput = document.getElementById('pfp-input');
+    const pfpPreview = document.getElementById('pfp-preview');
+    const pfpInitials = document.getElementById('dash-initials');
+
+    function showErr(id) { document.getElementById(id).style.display = 'block'; }
+    function hideErr(id) { document.getElementById(id).style.display = 'none'; }
+
+    // Profile Picture Logic
+    pfpInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                pfpPreview.src = e.target.result;
+                pfpPreview.style.display = 'block';
+                pfpInitials.style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Password Strength Logic
+    pass1.addEventListener('input', () => {
+        let score = 0;
+        let val = pass1.value;
+        if(val.length === 0) {
+            bar.style.width = "0%";
+            text.innerText = "Strength: Too Short";
+            bar.style.background = "transparent";
+            return;
+        }
+        if(val.length >= 8) score += 25;
+        if(val.match(/[A-Z]/)) score += 25;
+        if(val.match(/[0-9]/)) score += 25;
+        if(val.match(/[^A-Za-z0-9]/)) score += 25;
+
+        bar.style.width = score + "%";
+        if(score <= 25) {
+            text.innerText = "Strength: Weak";
+            text.style.color = "#ff4d4d";
+            bar.style.background = "#ff4d4d";
+        } else if(score <= 75) {
+            text.innerText = "Strength: Medium";
+            text.style.color = "#f59e0b";
+            bar.style.background = "#f59e0b";
+        } else {
+            text.innerText = "Strength: Strong";
+            text.style.color = "#10b981";
+            bar.style.background = "#10b981";
+        }
+    });
+
+    // Unified Form Submission
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let valid = true;
+
+        const nameVal = document.getElementById('fname').value;
+        const emailVal = document.getElementById('email').value;
+        const enrollVal = document.getElementById('enroll').value;
+        const cgpaVal = document.getElementById('cgpa').value;
+        const securityA = document.getElementById('securityAnswer').value;
+
+        // Validations
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { showErr('emailErr'); valid = false; } else hideErr('emailErr');
+        if(enrollVal.length !== 8) { showErr('enrollErr'); valid = false; } else hideErr('enrollErr');
+        if(pass1.value !== pass2.value) { showErr('matchErr'); valid = false; } else hideErr('matchErr');
+        if(cgpaVal === "" || cgpaVal < 0 || cgpaVal > 10) { showErr('cgpaErr'); valid = false; } else hideErr('cgpaErr');
+        if(securityA.trim().length < 3) { showErr('kbaErr'); valid = false; } else hideErr('kbaErr');
+
+        if(valid) {
+            // Populate Dashboard
+            document.getElementById('dash-name').innerText = nameVal;
+            document.getElementById('dash-email').innerText = emailVal;
+            document.getElementById('dash-cgpa').innerText = cgpaVal;
+            document.getElementById('dash-enroll').innerText = "#" + enrollVal.toUpperCase();
+            document.getElementById('dash-course').innerText = document.getElementById('course').value || "General Studies";
+            document.getElementById('dash-dob').innerText = document.getElementById('dob').value;
+            
+            const initials = nameVal.split(' ').map(n => n[0]).join('').toUpperCase();
+            pfpInitials.innerText = initials.substring(0, 2);
+
+            // Hide Form, Show Dashboard
+            form.style.opacity = '0';
+            setTimeout(() => {
+                form.style.display = 'none';
+                dashboard.style.display = 'block';
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }, 400);
+        }
+    });
+
+    // OTP Auto-focus
+    const otps = document.querySelectorAll('.otp-box');
+    otps.forEach((input, index) => {
+        input.addEventListener('keyup', (e) => {
+            if(e.target.value.length === 1 && index < otps.length - 1) {
+                otps[index + 1].focus();
+            }
+        });
+    });
+</script>
+</body></html>
